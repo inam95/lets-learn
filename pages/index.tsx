@@ -6,7 +6,7 @@ import Link from 'next/link';
 import supabaseClient from '../utils/supabaseClient';
 
 export const getStaticProps: GetStaticProps<{ lessons: any[] }> = async () => {
-  const { data: lessons, error } = await supabaseClient()
+  const { data: lessons, error } = await supabaseClient
     .from('lesson')
     .select('*');
   if (error) {
@@ -22,6 +22,8 @@ export const getStaticProps: GetStaticProps<{ lessons: any[] }> = async () => {
 };
 
 const Home: NextPage<{ lessons: any[] }> = ({ lessons }) => {
+  console.log(supabaseClient.auth.user());
+
   return (
     <div>
       <Head>

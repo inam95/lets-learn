@@ -9,7 +9,7 @@ interface Params extends ParsedUrlQuery {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const { data, error } = await supabaseClient().from('lesson').select('id');
+  const { data, error } = await supabaseClient.from('lesson').select('id');
 
   if (error) {
     throw new Error('Something went wrong while fetching lesson Ids', {
@@ -31,7 +31,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps<any, Params> = async (context) => {
   const { id } = context.params!;
-  const { data: lesson, error } = await supabaseClient()
+  const { data: lesson, error } = await supabaseClient
     .from('lesson')
     .select('*')
     .eq('id', id)
@@ -42,8 +42,6 @@ export const getStaticProps: GetStaticProps<any, Params> = async (context) => {
       cause: error as unknown as Error
     });
   }
-
-  console.log(typeof lesson.created_at);
 
   return {
     props: {
