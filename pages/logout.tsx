@@ -1,17 +1,15 @@
 import { NextPage } from 'next';
-import supabaseClient from '../utils/supabaseClient';
 import { useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useUser } from '../context/userContext';
 
 const Logout: NextPage = () => {
-  const router = useRouter();
+  const { logout } = useUser();
   useEffect(() => {
     async function signOut() {
-      await supabaseClient.auth.signOut();
+      logout();
     }
     signOut();
-    router.push('/');
-  });
+  }, [logout]);
 
   return <div>Logout</div>;
 };

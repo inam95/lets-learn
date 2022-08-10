@@ -1,16 +1,16 @@
 import { NextPage } from 'next';
-import supabaseClient from '../utils/supabaseClient';
 import { useEffect } from 'react';
+import { useUser } from '../context/userContext';
 
 const Login: NextPage = () => {
+  const { login } = useUser();
   useEffect(() => {
     async function signIn() {
-      await supabaseClient.auth.signIn({
-        provider: 'github'
-      });
+      login();
     }
     signIn();
-  }, []);
+  }, [login]);
+
   return <div>Login</div>;
 };
 

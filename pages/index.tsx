@@ -3,6 +3,7 @@ import type { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useUser } from '../context/userContext';
 import supabaseClient from '../utils/supabaseClient';
 
 export const getStaticProps: GetStaticProps<{ lessons: any[] }> = async () => {
@@ -22,7 +23,9 @@ export const getStaticProps: GetStaticProps<{ lessons: any[] }> = async () => {
 };
 
 const Home: NextPage<{ lessons: any[] }> = ({ lessons }) => {
-  console.log(supabaseClient.auth.user());
+  const { user } = useUser();
+
+  console.log('user', user);
 
   return (
     <div>
