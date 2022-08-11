@@ -2,7 +2,9 @@ import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 
 import Head from 'next/head';
 import { ParsedUrlQuery } from 'querystring';
+import { useEffect, useState } from 'react';
 import supabaseClient from '../utils/supabaseClient';
+import Video from 'react-player';
 
 interface Params extends ParsedUrlQuery {
   id: string;
@@ -51,6 +53,21 @@ export const getStaticProps: GetStaticProps<any, Params> = async (context) => {
 };
 
 const LocationDetails: NextPage = ({ lesson }) => {
+  const [videoUrl, setVideoUrl] = useState('');
+
+  useEffect(() => {
+    getPremiumContent();
+  }, []);
+
+  const getPremiumContent = async () => {
+    const { data: premiumContent } = await supabaseClient
+      .from('premium_content')
+      .select('*')
+      .eq('id', lesson.id)
+      .single();
+
+    setVideoUrl(() => premiumContent?.video_url);
+  };
   return (
     <div>
       <Head>
@@ -61,6 +78,7 @@ const LocationDetails: NextPage = ({ lesson }) => {
         <div className="w-full max-w-3xl px-8 py-16 mx-auto">
           <h1 className="mb-6 text-3xl">{lesson.title}</h1>
           <p>{lesson.description}</p>
+          {!!videoUrl && <Video url={videoUrl} width="100%" />}
         </div>
       </main>
     </div>
